@@ -1,141 +1,198 @@
-foursquare:
-  checkin:
-    description: Check a user into a Foursquare venue
+# Describes the format for available media_player services
 
-    fields:
-      venueId:
-        description: The Foursquare venue where the user is checking in. [Required]
-        example: IHR8THISVNU
+turn_on:
+  description: Turn a media player power on
 
-      eventId:
-        description: The event the user is checking in to. [Optional]
-        example: UHR8THISVNT
+  fields:
+    entity_id:
+      description: Name(s) of entities to turn on
+      example: 'media_player.living_room_chromecast'
 
-      shout:
-        description: A message about your check-in. The maximum length of this field is 140 characters. [Optional]
-        example: There are crayons! Crayons!
+turn_off:
+  description: Turn a media player power off
 
-      mentions:
-        description: Mentions in your check-in. This parameter is a semicolon-delimited list of mentions. A single mention is of the form "start,end,userid", where start is the index of the first character in the shout representing the mention, end is the index of the first character in the shout after the mention, and userid is the userid of the user being mentioned. If userid is prefixed with "fbu-", this indicates a Facebook userid that is being mention. Character indices in shouts are 0-based. [Optional]
-        example: 5,10,HZXXY3Y;15,20,GZYYZ3Z;25,30,fbu-GZXY13Y
+  fields:
+    entity_id:
+      description: Name(s) of entities to turn off
+      example: 'media_player.living_room_chromecast'
 
-      broadcast:
-        description: "Who to broadcast this check-in to. Accepts a comma-delimited list of values: private (off the grid) or public (share with friends), facebook share on facebook, twitter share on twitter, followers share with followers (celebrity mode users only), If no valid value is found, the default is public. [Optional]"
-        example: public,twitter
+toggle:
+  description: Toggles a media player power state
 
-      ll:
-        description: Latitude and longitude of the user's location. Only specify this field if you have a GPS or other device reported location for the user at the time of check-in. [Optional]
-        example: 33.7,44.2
+  fields:
+    entity_id:
+      description: Name(s) of entities to toggle
+      example: 'media_player.living_room_chromecast'
 
-      llAcc:
-        description: Accuracy of the user's latitude and longitude, in meters. [Optional]
-        example: 1
+volume_up:
+  description: Turn a media player volume up
 
-      alt:
-        description: Altitude of the user's location, in meters. [Optional]
-        example: 0
+  fields:
+    entity_id:
+      description: Name(s) of entities to turn volume up on
+      example: 'media_player.living_room_sonos'
 
-      altAcc:
-        description: Vertical accuracy of the user's location, in meters.
-        example: 1
+volume_down:
+  description: Turn a media player volume down
 
-group:
-  reload:
-    description: "Reload group configuration."
-    fields:
+  fields:
+    entity_id:
+      description: Name(s) of entities to turn volume down on
+      example: 'media_player.living_room_sonos'
 
-persistent_notification:
-  create:
-    description: Show a notification in the frontend
+volume_mute:
+  description: Mute a media player's volume
 
-    fields:
-      message:
-        description: Message body of the notification. [Templates accepted]
-        example: Please check your configuration.yaml.
+  fields:
+    entity_id:
+      description: Name(s) of entities to mute
+      example: 'media_player.living_room_sonos'
+    is_volume_muted:
+      description: True/false for mute/unmute
+      example: true
 
-      title:
-        description: Optional title for your notification. [Optional, Templates accepted]
-        example: Test notification
+volume_set:
+  description: Set a media player's volume level
 
-      notification_id:
-        description: Target ID of the notification, will replace a notification with the same Id. [Optional]
-        example: 1234
+  fields:
+    entity_id:
+      description: Name(s) of entities to set volume level on
+      example: 'media_player.living_room_sonos'
+    volume_level:
+      description: Volume level to set
+      example: 60
 
-homematic:
-  virtualkey:
-    description: Press a virtual key from CCU/Homegear or simulate keypress
+media_play_pause:
+  description: Toggle media player play/pause state
 
-    fields:
-      address:
-        description: Address of homematic device or BidCoS-RF for virtual remote
-        example: BidCoS-RF
+  fields:
+    entity_id:
+      description: Name(s) of entities to toggle play/pause state on
+      example: 'media_player.living_room_sonos'
 
-      channel:
-        description: Channel for calling a keypress
-        example: 1
+media_play:
+  description: Send the media player the command for play.
 
-      param:
-        description: Event to send i.e. PRESS_LONG, PRESS_SHORT
-        example: PRESS_LONG
+  fields:
+    entity_id:
+      description: Name(s) of entities to play on
+      example: 'media_player.living_room_sonos'
 
-  set_value:
-    description: Set the name of a node.
+media_pause:
+  description: Send the media player the command for pause.
 
-    fields:
-      entity_id:
-        description: Name(s) of entities to set value
-        example: 'homematic.my_variable'
+  fields:
+    entity_id:
+      description: Name(s) of entities to pause on
+      example: 'media_player.living_room_sonos'
 
-      value:
-        description: New value
-        example: 1
+media_stop:
+  description: Send the media player the stop command.
 
-openalpr:
-  scan:
-    description: Scan immediately a device.
+  fields:
+    entity_id:
+      description: Name(s) of entities to stop on
+      example: 'media_player.living_room_sonos'
 
-    fields:
-      entity_id:
-        description: Name(s) of entities to scan
-        example: 'openalpr.garage'
+media_next_track:
+  description: Send the media player the command for next track.
 
-  restart:
-    description: Restart ffmpeg process of device.
+  fields:
+    entity_id:
+      description: Name(s) of entities to send next track command to
+      example: 'media_player.living_room_sonos'
 
-zwave:
-  add_node:
-    description: Add a new node to the zwave network. Refer to OZW.log for details.
+media_previous_track:
+  description: Send the media player the command for previous track.
 
-  add_node_secure:
-    description: Add a new node to the zwave network with secure communications. Node must support this, and network key must be set. Refer to OZW.log for details.
+  fields:
+    entity_id:
+      description: Name(s) of entities to send previous track command to
+      example: 'media_player.living_room_sonos'
 
-  cancel_command:
-    description: Cancel a running zwave controller command. Use this to exit add_node, if you wasn't going to use it but activated it.
+media_seek:
+  description: Send the media player the command to seek in current playing media.
 
-  heal_network:
-    description: Start a zwave network heal. This might take a while and will slow down the zwave network greatly while it is being processed. Refer to OZW.log for details.
+  fields:
+    entity_id:
+      description: Name(s) of entities to seek media on
+      example: 'media_player.living_room_chromecast'
+    seek_position:
+      description: Position to seek to. The format is platform dependent.
+      example: 100
 
-  remove_node:
-    description: Remove a node from the zwave network. Refer to OZW.log for details.
+play_media:
+  description: Send the media player the command for playing media.
 
-  start_network:
-    description: Start the zwave network. This might take a while, depending on how big your zwave network is.
+  fields:
+    entity_id:
+      description: Name(s) of entities to seek media on
+      example: 'media_player.living_room_chromecast'
+    media_content_id:
+      description: The ID of the content to play. Platform dependent.
+      example: 'https://home-assistant.io/images/cast/splash.png'
+    media_content_type:
+      description: The type of the content to play. Must be one of MUSIC, TVSHOW, VIDEO, EPISODE, CHANNEL or PLAYLIST
+      example: 'MUSIC'
 
-  stop_network:
-    description: Stop the zwave network, all updates into HASS will stop.
+select_source:
+  description: Send the media player the command to change input source.
 
-  soft_reset:
-    description: This will reset the controller without removing its data. Use carefully because not all controllers support this. Refer to controllers manual.
+  fields:
+    entity_id:
+      description: Name(s) of entites to change source on
+      example: 'media_player.media_player.txnr535_0009b0d81f82'
+    source:
+      description: Name of the source to switch to. Platform dependent.
+      example: 'video1'
 
-  test_network:
-    description: This will send test to nodes in the zwave network. This will greatly slow down the zwave network while it is being processed. Refer to OZW.log for details.
+clear_playlist:
+  description: Send the media player the command to clear players playlist.
 
-  rename_node:
-    description: Set the name of a node.
-    fields:
-      entity_id:
-        description: Name(s) of entities to to rename
-        example: 'light.leviton_vrmx11lz_multilevel_scene_switch_level_40'
-      name:
-        description: New Name
-        example: 'kitchen'
+  fields:
+    entity_id:
+      description: Name(s) of entites to change source on
+      example: 'media_player.living_room_chromecast'
+
+sonos_group_players:
+  description: Send Sonos media player the command for grouping all players into one (party mode).
+
+  fields:
+    entity_id:
+      description: Name(s) of entites that will coordinate the grouping. Platform dependent.
+      example: 'media_player.living_room_sonos'
+
+sonos_unjoin:
+  description: Unjoin the player from a group.
+
+  fields:
+    entity_id:
+      description: Name(s) of entites that will be unjoined from their group. Platform dependent.
+      example: 'media_player.living_room_sonos'
+
+sonos_snapshot:
+  description: Take a snapshot of the media player.
+
+  fields:
+    entity_id:
+      description: Name(s) of entites that will be snapshot. Platform dependent.
+      example: 'media_player.living_room_sonos'
+
+sonos_restore:
+  description: Restore a snapshot of the media player.
+
+  fields:
+    entity_id:
+      description: Name(s) of entites that will be restored. Platform dependent.
+      example: 'media_player.living_room_sonos'
+
+sonos_set_timer:
+  description: Set a Sonos timer
+
+  fields:
+    entity_id:
+      description: Name(s) of entites that will have a timer set.
+      example: 'media_player.living_room_sonos'
+    sleep_time:
+      description: Number of seconds to set the timer
+      example: '900'
