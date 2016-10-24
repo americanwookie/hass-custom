@@ -11,7 +11,7 @@ import socket
 import voluptuous as vol
 
 from homeassistant.components.media_player import (
-    ATTR_MEDIA_ENQUEUE, DOMAIN, MEDIA_TYPE_MUSIC, SUPPORT_NEXT_TRACK,
+    ATTR_MEDIA_CONTENT_ID, ATTR_MEDIA_ENQUEUE, DOMAIN, MEDIA_TYPE_MUSIC, SUPPORT_NEXT_TRACK,
     SUPPORT_PAUSE, SUPPORT_PLAY_MEDIA, SUPPORT_PREVIOUS_TRACK, SUPPORT_SEEK,
     SUPPORT_VOLUME_MUTE, SUPPORT_VOLUME_SET, SUPPORT_CLEAR_PLAYLIST,
     SUPPORT_SELECT_SOURCE, MediaPlayerDevice)
@@ -21,7 +21,7 @@ from homeassistant.const import (
 from homeassistant.config import load_yaml_config_file
 import homeassistant.helpers.config_validation as cv
 
-REQUIREMENTS = ['SoCo==0.11.1']
+REQUIREMENTS = ['SoCo==0.12']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -42,8 +42,10 @@ SERVICE_UNJOIN = 'sonos_unjoin'
 SERVICE_SNAPSHOT = 'sonos_snapshot'
 SERVICE_RESTORE = 'sonos_restore'
 SERVICE_SET_TIMER = 'sonos_set_timer'
+SERVICE_PLAY_FAVORITE = 'sonos_play_favorite'
 
 ATTR_SLEEP_TIME = 'sleep_time'
+ATTR_FAVORITE = 'favorite_name'
 
 SUPPORT_SOURCE_LINEIN = 'Line-in'
 SUPPORT_SOURCE_TV = 'TV'
@@ -136,6 +138,10 @@ def register_services(hass):
                            descriptions.get(SERVICE_SET_TIMER),
                            schema=SONOS_SET_TIMER_SCHEMA)
 
+    #TODO add schema, update services.yaml
+    hass.services.register(DOMAIN, SERVICE_PLAY_FAVORITE,
+                           _play_favorite_service,
+                           descriptions.get(SERVICE_PLAY_FAVORITE))
 
 def _apply_service(service, service_func, *service_func_args):
     """Internal func for applying a service."""
@@ -176,6 +182,10 @@ def _set_timer_service(service):
     """Set a timer."""
     _apply_service(service, SonosDevice.set_timer, service.data[ATTR_SLEEP_TIME])
 
+
+def _play_favorite_service(service):
+    """Set a timer."""
+    _apply_service(service, SonosDevice.play_favorite, service.data[ATTR_FAVORITE])
 
 def only_if_coordinator(func):
     """Decorator for coordinator.
@@ -429,6 +439,19 @@ class SonosDevice(MediaPlayerDevice):
                               'supported by Sonos', media_id)
         else:
             self._player.play_uri(media_id)
+
+    @only_if_coordinator
+    def play_favorite(self, favorite_name, **kwargs):
+        favorites = self._player.get_sonos_favorites()
+        wanted = None
+        for favorite in favorites['favorites']:
+            if favorite['title'] == favorite_name:
+                wanted = favorite
+        if wanted:
+          self._player.play_uri( uri=wanted['uri'],
+                                 meta=wanted['meta'],
+                                 title='Hello world',
+                                 start=True )
 
     @only_if_coordinator
     def group_players(self):
