@@ -1,3 +1,3 @@
-FROM homeassistant/rpi2-home-assistant
+FROM homeassistant/raspberrypi3-homeassistant:0.66.1
 
-CMD ["python","-m","homeassistant","--config","/config"]
+CMD ["python3","-m","homeassistant","--config","/config"]
