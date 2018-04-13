@@ -1,7 +1,7 @@
-FROM homeassistant/raspberrypi3-homeassistant:0.66.1
+FROM homeassistant/rpi2-home-assistant
 
 #Automatically change speaker groups for wake up ping
 COPY run.py /run.py
 COPY run.sh /run.sh
 
-CMD ["python3","-m","homeassistant","--config","/config"]
+CMD ["python","-m","homeassistant","--config","/config"]
