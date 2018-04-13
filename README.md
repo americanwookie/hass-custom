@@ -17,5 +17,5 @@ docker build -t scott-hass .
 
 And then to start it, I run:
 ```
-docker run -d --name="home-assistant" -v ~/config:/config -v /etc/localtime:/etc/localtime:ro --net=host --device=/dev/ttyACM0:/dev/ttyACM0:rwm scott-hass
+docker run -d --name="home-assistant" -v ~/config:/config -v /etc/localtime:/etc/localtime:ro -v ~/binddirs/certs:/certs:ro --net=host --device=/dev/ttyACM0:/dev/ttyACM0:rwm scott-hass
 ```
