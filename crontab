@@ -1,0 +1,2 @@
+25 5 * * * /usr/bin/docker exec -i home-assistant-2018 sh run.sh
+* * * * * /usr/bin/curl -s unifi-api:8000/unlock_eligible > /dev/null
