@@ -5,5 +5,12 @@ COPY run.py /run.py
 COPY run.sh /run.sh
 COPY fix-hosts-u-controller.sh /fix-hosts-u-controller.sh
 
+#Set the port for Vizio module
 RUN sed -i 's/9000/7345/g' /usr/lib/python3.6/site-packages/pyvizio/protocol.py
+
+#My hack to enable the sonos in HA to play favorites
+RUN mkdir /patches
+COPY patches/* /patches/
+RUN cat /patches/add-favorites.patch | patch -p0 /usr/lib/python3.6/site-packages/homeassistant/components/media_player/sonos.py
+
 CMD ["python3","-m","homeassistant","--config","/config"]
