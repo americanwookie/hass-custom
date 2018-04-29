@@ -1,5 +1,5 @@
---- sonos-new.py.orig	2018-04-22 18:29:59.180561565 -0500
-+++ sonos-new.py	2018-04-22 19:11:55.002485481 -0500
+--- sonos.py.orig	2018-04-26 08:20:02.315573263 -0500
++++ sonos.py	2018-04-26 08:25:53.373046161 -0500
 @@ -48,6 +48,7 @@
  SERVICE_CLEAR_TIMER = 'sonos_clear_sleep_timer'
  SERVICE_UPDATE_ALARM = 'sonos_update_alarm'
@@ -54,14 +54,14 @@
      @soco_error()
 +    @soco_coordinator
 +    def play_favorite(self, favorite_name, **kwargs):
-+        favorites = self._player.get_sonos_favorites()
++        favorites = self._player.music_library.get_sonos_favorites()
 +        wanted = None
-+        for favorite in favorites['favorites']:
-+            if favorite['title'] == favorite_name:
++        for favorite in favorites:
++            if favorite.title == favorite_name:
 +                wanted = favorite
 +        if wanted:
-+          self._player.play_uri( uri=wanted['uri'],
-+                                 meta=wanted['meta'],
++          self._player.play_uri( uri=wanted.get_uri(),
++                                 meta=wanted.resource_meta_data,
 +                                 title='Hello world',
 +                                 start=True )
 +
